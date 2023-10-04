@@ -55,7 +55,7 @@ for i, j in loc.items():
 comMP3 = []
 
 for line in arr:
-    if re.search(r'.mp3', line[-1]):
+    if re.search(r'.mp3', line[-2]):
         comMP3.append(getCancao(line))
 
 for i in comMP3:
