@@ -8,12 +8,13 @@ f = open('arq-son.txt', 'r', encoding="utf-8")
 
 
 def getProvince(line):
-    # TODO
     return re.sub(r'\W', '', line[0], re.UNICODE)
 
 
 def getLocal(line):
     # TODO
+    if ';' in line[1]:
+        return '-'
     return line[1]
 
 
@@ -21,10 +22,14 @@ def getCancao(line):
     # TODO
     return re.match(r'[^;(]*', line[2]).group(0)
 
+def getInstrumentos(line):
+    # TODO
+    return ""
+
 
 def getCantores(line):
     # TODO
-    res = [re.match(r'[^;(\s]*', i).group(0) for i in re.split(';', line[3])]
+    res = [re.match(r'[^;(\s]*', i).group(0) for i in line[3].split(';')]
     return [i for i in res if i != '']
 
 
@@ -55,14 +60,23 @@ for i, j in loc.items():
 comMP3 = []
 
 for line in arr:
-    if re.search(r'.mp3', line[-2]):
-        comMP3.append(getCancao(line))
+    for i in line:
+        if re.search(r'.mp3', line[-2]):
+            comMP3.append(getCancao(line))
+            break
 
 for i in comMP3:
     print(i)
 
 # ------------- c) -------------
 
+intrumentos = {}
+for line in arr:
+    for i in getInstrumentos(line):
+        intrumentos[i] += 1
+
+for i, j in intrumentos.items():
+    print(f'{i}: {j}')
 
 # ------------- d) -------------
 
