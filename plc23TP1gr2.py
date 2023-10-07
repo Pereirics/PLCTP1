@@ -12,10 +12,12 @@ def getProvince(line):
 
 
 def getLocal(line):
-    # TODO
-    if ';' in line[1]:
-        return '-'
-    return line[1]
+    pattern = r',\s*(.*)$'
+    match = re.search(pattern, line[1])
+    if match:
+        return match.group(1)
+    else:
+        return line[1]
 
 
 def getCancao(line):
@@ -39,12 +41,11 @@ s = ftfy.fix_text(f.read())
 v = re.split(r'\n', s, flags=re.MULTILINE)
 arr = [re.split('::', i) for i in v[1:]]
 arr = [line[:-1] for line in arr]
-arr[-1].pop()
 
-for i in range(len(arr)):
-    print(arr[i])
+for i in range(len(arr)-1, -1, -1):
+    if len(arr[i]) < 6:
+        del arr[i]
 
-'''
 # ------------- a) -------------
 
 prov = collections.defaultdict(int)
@@ -54,13 +55,14 @@ for line in arr:
     prov[getProvince(line)] += 1
     loc[getLocal(line)] += 1
 
+print("\nPROVINCIAS")
 for i, j in prov.items():
     print(f"{i}: {j}")
 
+print("\nLOCAIS")
 for i, j in loc.items():
     print(f"{i}: {j}")
-
-
+'''
 # ------------- b) -------------
 
 comMP3 = []
