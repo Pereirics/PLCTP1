@@ -33,13 +33,18 @@ def getCantores(line):
     return [i for i in res if i != '']
 
 
-# Provincia::LocalOrig::Titulo::Musicos::SuporteDigital::
+# Provincia::LocalOrig::Titulo::Musicos::SuporteDigital::...
 
 s = ftfy.fix_text(f.read())
-v = re.split(r'::\n', s, flags=re.MULTILINE)
+v = re.split(r'\n', s, flags=re.MULTILINE)
 arr = [re.split('::', i) for i in v[1:]]
+arr = [line[:-1] for line in arr]
 arr[-1].pop()
 
+for i in range(len(arr)):
+    print(arr[i])
+
+'''
 # ------------- a) -------------
 
 prov = collections.defaultdict(int)
@@ -54,6 +59,7 @@ for i, j in prov.items():
 
 for i, j in loc.items():
     print(f"{i}: {j}")
+
 
 # ------------- b) -------------
 
@@ -100,5 +106,5 @@ for line in arr:
 
 for i, j in adjList.items():
     print(f'{i}: {j}')
-
+'''
 
