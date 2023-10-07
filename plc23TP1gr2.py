@@ -127,21 +127,27 @@ musicos = collections.defaultdict(int)
 for line in arr:
     for i in getMusicos(line):
         musicos[i] += 1
-
+'''
 for i, j in musicos.items():
     print(f"{i}: {j}")
-
 '''
+
 # ------------- e) -------------
 
 adjList = collections.defaultdict(list)
 
 for line in arr:
-    cancao = getMusicos(line)
+    cancao = getCancao(line)
     for i in getMusicos(line):
-        adjList[cancao].append(i)
+        if i not in adjList[cancao]:
+            adjList[cancao].append(i)
 
-for i, j in adjList.items():
-    print(f'{i}: {j}')
-'''
+grafo = nx.DiGraph()
 
+for cancao, cantores in adjList.items():
+    grafo.add_node(cancao)
+    for cantor in cantores:
+        grafo.add_node(cantor)
+        grafo.add_edge(cantor, cancao)
+
+nx.nx_pydot.write_dot(grafo, "musicas_cantores_grafo.dot")
