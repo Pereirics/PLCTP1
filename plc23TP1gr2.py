@@ -55,6 +55,7 @@ for line in arr:
     prov[getProvince(line)] += 1
     loc[getLocal(line)] += 1
 
+'''
 print("\nPROVINCIAS")
 for i, j in prov.items():
     print(f"{i}: {j}")
@@ -68,14 +69,16 @@ for i, j in loc.items():
 comMP3 = []
 
 for line in arr:
-    for i in line:
-        if re.search(r'.mp3', line[-2]):
-            comMP3.append(getCancao(line))
-            break
+    if re.search(r'\.mp3', line[-2]):
+        comMP3.append(getCancao(line))
 
-for i in comMP3:
-    print(i)
+percent = len(comMP3) / len(arr) * 100
+print(percent)
 
+for mus in comMP3:
+    print(mus)
+
+'''
 # ------------- c) -------------
 
 intrumentos = {}
