@@ -27,26 +27,42 @@ def getInstrumentos(line):
     res = []
     line = re.split(';', line[3])
     
-    pattern1 = r'\((\D*)\)'
+    pattern1 = r'(\((\D*)\))$'
     pattern2 = r'\((\D*) e (\D*)\)'
+    pattern3 = r'\(.*\) (\D*)'
 
     for pedaco in line:
+        pedaco = pedaco.strip()
         match1 = re.search(pattern1, pedaco)
         match2 = re.search(pattern2, pedaco)
-        if match2:
+        match3 = re.search(pattern3, pedaco)
+        if match3:
+            res.append(match3.group(1).lower())
+        elif match2:
             res.append(match2.group(1).lower())
             res.append(match2.group(2).lower())
         elif match1:
-            res.append(match1.group(1).lower())
+            res.append(match1.group(2).lower())
         elif pedaco in instrumentos:
             res.append(pedaco.lower())
+
     return res
 
 def getMusicos(line):
-    # TODO
-    res = [re.match(r'[^;(\s]*', i).group(0) for i in line[3].split(';')]
-    return [i for i in res if i != '']
+    res = []
+    line = re.split(';', line[3])
+    
+    pattern1 = r'(.+?) +\(\D*\)'
 
+    for pedaco in line:
+        pedaco = pedaco.strip()
+        match1 = re.search(pattern1, pedaco)
+        if match1:
+            res.append(match1.group(1).lower())
+        elif pedaco in musicos:
+            res.append(pedaco.lower())
+    return res
+    
 
 # Provincia::LocalOrig::Titulo::Musicos::SuporteDigital::...
 
@@ -100,10 +116,9 @@ instrumentos = collections.defaultdict(int)
 for line in arr:
     for i in getInstrumentos(line):
         instrumentos[i] += 1
-
+'''
 for i, j in instrumentos.items():
     print(f"{i}: {j}")
-
 '''
 # ------------- d) -------------
 
@@ -116,6 +131,7 @@ for line in arr:
 for i, j in musicos.items():
     print(f"{i}: {j}")
 
+'''
 # ------------- e) -------------
 
 adjList = collections.defaultdict(list)
