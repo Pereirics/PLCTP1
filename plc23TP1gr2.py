@@ -21,15 +21,28 @@ def getLocal(line):
 
 
 def getCancao(line):
-    # TODO
     return re.match(r'[^;(]*', line[2]).group(0)
 
 def getInstrumentos(line):
-    # TODO
-    return ""
+    res = []
+    line = re.split(';', line[3])
+    
+    pattern1 = r'\((\D*)\)'
+    pattern2 = r'\((\D*) e (\D*)\)'
 
+    for pedaco in line:
+        match1 = re.search(pattern1, pedaco)
+        match2 = re.search(pattern2, pedaco)
+        if match2:
+            res.append(match2.group(1).lower())
+            res.append(match2.group(2).lower())
+        elif match1:
+            res.append(match1.group(1).lower())
+        elif pedaco in instrumentos:
+            res.append(pedaco.lower())
+    return res
 
-def getCantores(line):
+def getMusicos(line):
     # TODO
     res = [re.match(r'[^;(\s]*', i).group(0) for i in line[3].split(';')]
     return [i for i in res if i != '']
@@ -73,6 +86,7 @@ for line in arr:
         comMP3.append(getCancao(line))
 
 percent = len(comMP3) / len(arr) * 100
+'''
 print(percent)
 
 for mus in comMP3:
@@ -81,23 +95,25 @@ for mus in comMP3:
 '''
 # ------------- c) -------------
 
-intrumentos = {}
+instrumentos = collections.defaultdict(int)
+
 for line in arr:
     for i in getInstrumentos(line):
-        intrumentos[i] += 1
+        instrumentos[i] += 1
 
-for i, j in intrumentos.items():
-    print(f'{i}: {j}')
+for i, j in instrumentos.items():
+    print(f"{i}: {j}")
 
+'''
 # ------------- d) -------------
 
-cantores = collections.defaultdict(int)
+musicos = collections.defaultdict(int)
 
 for line in arr:
-    for i in getCantores(line):
-        cantores[i] += 1
+    for i in getMusicos(line):
+        musicos[i] += 1
 
-for i, j in cantores.items():
+for i, j in musicos.items():
     print(f"{i}: {j}")
 
 # ------------- e) -------------
@@ -105,8 +121,8 @@ for i, j in cantores.items():
 adjList = collections.defaultdict(list)
 
 for line in arr:
-    cancao = getCancao(line)
-    for i in getCantores(line):
+    cancao = getMusicos(line)
+    for i in getMusicos(line):
         adjList[cancao].append(i)
 
 for i, j in adjList.items():
