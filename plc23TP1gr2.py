@@ -3,6 +3,7 @@ import re
 import networkx as nx
 import matplotlib.pyplot as plt
 import ftfy
+import os
 
 f = open('arq-son.txt', 'r', encoding="utf-8")
 
@@ -84,7 +85,10 @@ for line in arr:
     prov[getProvince(line)] += 1
     loc[getLocal(line)] += 1
 
-'''
+print("-----------------------------------------------------------")
+print("Calcular a frequência de registos por Província e por Local")
+print("-----------------------------------------------------------")
+
 print("\nPROVINCIAS")
 for i, j in prov.items():
     print(f"{i}: {j}")
@@ -92,7 +96,8 @@ for i, j in prov.items():
 print("\nLOCAIS")
 for i, j in loc.items():
     print(f"{i}: {j}")
-'''
+
+print("\n\n")
 # ------------- b) -------------
 
 comMP3 = []
@@ -102,13 +107,19 @@ for line in arr:
         comMP3.append(getCancao(line))
 
 percent = len(comMP3) / len(arr) * 100
-'''
-print(percent)
 
+print("------------------------------------------------------------------------------------------------------------")
+print("Calcular a percentagem de canções que têm pelo menos uma gravação \"mp3\", indicando o título dessas canções")
+print("------------------------------------------------------------------------------------------------------------")
+
+print(f"PERCENTAGEM\n{percent}")
+
+print("\nTITULOS")
 for mus in comMP3:
     print(mus)
 
-'''
+print("\n\n")
+
 # ------------- c) -------------
 
 instrumentos = collections.defaultdict(int)
@@ -116,10 +127,16 @@ instrumentos = collections.defaultdict(int)
 for line in arr:
     for i in getInstrumentos(line):
         instrumentos[i] += 1
-'''
+
+print("-----------------------------------------------")
+print("Calcular a distribuição por instrumento musical")
+print("-----------------------------------------------")
+
 for i, j in instrumentos.items():
     print(f"{i}: {j}")
-'''
+
+print("\n\n")
+
 # ------------- d) -------------
 
 musicos = collections.defaultdict(int)
@@ -127,10 +144,15 @@ musicos = collections.defaultdict(int)
 for line in arr:
     for i in getMusicos(line):
         musicos[i] += 1
-'''
+
+print("-------------------------------------------------------------------------------------------------")
+print("Identificar todos os Musicos/cantores registados e calcular o número de vezes que são mencionados")
+print("-------------------------------------------------------------------------------------------------")
+
 for i, j in musicos.items():
     print(f"{i}: {j}")
-'''
+
+print("\n\n")
 
 # ------------- e) -------------
 
@@ -151,3 +173,9 @@ for cancao, cantores in adjList.items():
         grafo.add_edge(cantor, cancao)
 
 nx.nx_pydot.write_dot(grafo, "musicas_cantores_grafo.dot")
+
+print("----------------------------------------------------------------------------------------------------------")
+print("Construir um Grafo de Canções/Cantores que associa cada canção aos cantores/tocadores referidos no registo")
+print("----------------------------------------------------------------------------------------------------------")
+
+os.execv("/usr/bin/xdot", ["xdot", "musicas_cantores_grafo.dot"])
