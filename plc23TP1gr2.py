@@ -1,9 +1,7 @@
 import collections
 import re
 import networkx as nx
-import matplotlib.pyplot as plt
 import ftfy
-import os
 
 f = open('arq-son.txt', 'r', encoding="utf-8")
 
@@ -48,6 +46,7 @@ def getInstrumentos(line):
             res.append(pedaco.lower())
 
     return res
+
 
 def getMusicos(line):
     res = []
@@ -103,7 +102,7 @@ print("\n\n")
 comMP3 = []
 
 for line in arr:
-    if re.search(r'\.mp3', line[-2]):
+    if re.search(r"\.mp3", line[-2]):
         comMP3.append(getCancao(line))
 
 percent = len(comMP3) / len(arr) * 100
@@ -124,7 +123,17 @@ print("\n\n")
 
 instrumentos = collections.defaultdict(int)
 
+vazia = []
+
 for line in arr:
+    inst = getInstrumentos(line)
+    if len(inst) == 0:
+        vazia.append(line)
+    else:
+        for i in inst:
+            instrumentos[i] += 1
+
+for line in vazia:
     for i in getInstrumentos(line):
         instrumentos[i] += 1
 
@@ -141,9 +150,18 @@ print("\n\n")
 
 musicos = collections.defaultdict(int)
 
+vazia = []
+
 for line in arr:
-    for i in getMusicos(line):
+    musc = getMusicos(line)
+    if len(musc) == 0:
+        vazia.append(line)
+    for i in musc:
         musicos[i] += 1
+
+for line in vazia:
+    for i in getMusicos(line):
+        instrumentos[i] += 1
 
 print("-------------------------------------------------------------------------------------------------")
 print("Identificar todos os Musicos/cantores registados e calcular o número de vezes que são mencionados")
@@ -178,4 +196,4 @@ print("-------------------------------------------------------------------------
 print("Construir um Grafo de Canções/Cantores que associa cada canção aos cantores/tocadores referidos no registo")
 print("----------------------------------------------------------------------------------------------------------")
 
-os.execv("/usr/bin/xdot", ["xdot", "musicas_cantores_grafo.dot"])
+# os.execv("/usr/bin/xdot", ["xdot", "musicas_cantores_grafo.dot"])
