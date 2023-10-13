@@ -1,6 +1,7 @@
 import collections
 import re
 import networkx as nx
+import matplotlib.pyplot as plt
 import ftfy
 
 f = open('arq-son.txt', 'r', encoding="utf-8")
@@ -114,7 +115,7 @@ print("-------------------------------------------------------------------------
 print(f"PERCENTAGEM\n{percent}")
 
 print("\nTITULOS")
-for mus in comMP3:
+for mus in list(set(comMP3)):
     print(mus)
 
 print("\n\n")
@@ -191,6 +192,15 @@ for cancao, cantores in adjList.items():
         grafo.add_edge(cantor, cancao)
 
 nx.nx_pydot.write_dot(grafo, "musicas_cantores_grafo.dot")
+
+pos = nx.random_layout(grafo)
+
+plt.figure(figsize=(50, 50))  # Adjust the figure size as needed
+nx.draw(grafo, pos, with_labels=True, node_size=100)
+
+# Save the visualization as an HTML image map
+plt.savefig("graph_visualization.png")
+
 
 print("----------------------------------------------------------------------------------------------------------")
 print("Construir um Grafo de Canções/Cantores que associa cada canção aos cantores/tocadores referidos no registo")
