@@ -283,4 +283,4 @@ with open('plc23TP1gr2.html', 'w') as file:
     file.write('<img src="graph_visualization.png" alt="Grafo Canções/Cantores">')
 
 # Abre o ficheiro html automaticamente
-webbrowser.open('out.html')
+webbrowser.open('plc23TP1gr2.html')
