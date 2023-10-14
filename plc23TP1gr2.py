@@ -2,6 +2,7 @@ import collections
 import re
 import networkx as nx
 import matplotlib.pyplot as plt
+import webbrowser
 import ftfy
 
 f = open('arq-son.txt', 'r', encoding="utf-8")
@@ -106,6 +107,8 @@ for line in arr:
     if re.search(r"\.mp3", line[-2]):
         comMP3.append(getCancao(line))
 
+comMP3 = list(set(comMP3))
+
 percent = len(comMP3) / len(arr) * 100
 
 print("------------------------------------------------------------------------------------------------------------")
@@ -115,7 +118,7 @@ print("-------------------------------------------------------------------------
 print(f"PERCENTAGEM\n{percent}")
 
 print("\nTITULOS")
-for mus in list(set(comMP3)):
+for mus in comMP3:
     print(mus)
 
 print("\n\n")
@@ -137,6 +140,8 @@ for line in arr:
 for line in vazia:
     for i in getInstrumentos(line):
         instrumentos[i] += 1
+
+instrumentos = dict(sorted(instrumentos.items(), key=lambda item: item[1], reverse=True))
 
 print("-----------------------------------------------")
 print("Calcular a distribuição por instrumento musical")
@@ -206,4 +211,71 @@ print("-------------------------------------------------------------------------
 print("Construir um Grafo de Canções/Cantores que associa cada canção aos cantores/tocadores referidos no registo")
 print("----------------------------------------------------------------------------------------------------------")
 
-# os.execv("/usr/bin/xdot", ["xdot", "musicas_cantores_grafo.dot"])
+####################################     HTML EXTRA    ####################
+with open('out.html', 'w') as file:
+
+    file.write('<html>\n<head>\n<title>TP1</title>\n</head>\n<body>\n')
+
+# A   
+    file.write('<p style="font-size: 24px;">Calcular a frequência de registos por Província e por Local.</p>\n')
+    #provincias
+    file.write('<table border="1">\n')
+    file.write('<table border="1" style="width: 300px;">\n')
+    file.write('<tr><th>Provincia</th><th>Registos</th></tr>\n')
+    for i, j in prov.items():
+        file.write(f'<tr><td>{i}</td><td>{j}</td></tr>\n')
+    file.write('</table>\n')
+    #locais
+    file.write('<table border="1">\n')
+    file.write('<table border="1" style="width: 300px;">\n')
+    file.write('<tr><th>Local</th><th>Registos</th></tr>\n')
+    for i, j in loc.items():
+        file.write(f'<tr><td>{i}</td><td>{j}</td></tr>\n')
+    file.write('</table>\n')
+    
+    
+# B
+    file.write('<p style="font-size: 24px;">Calcular a percentagem de canções que têm pelo menos uma gravação "mp3."</p>\n')
+    
+    file.write('<ul>\n')
+    if comMP3:
+        file.write('<li>' + comMP3[0])
+
+    for index, song in enumerate(comMP3[1:], start=1):
+        if index % 5 == 0:
+            file.write('</li>\n<li>')
+        elif index != 0:
+            file.write(' || ')
+        file.write(song)
+        
+    file.write('</li>\n</ul>\n')
+    
+    
+# C
+    file.write('<p style="font-size: 24px;">Calcular a distribuição por instrumento musical.</p>\n')
+
+    file.write('<table border="1">\n')
+    file.write('<table border="1" style="width: 300px;">\n')
+    file.write('<tr><th>Provincia</th><th>Registos</th></tr>\n')
+    for i, j in instrumentos.items():
+        file.write(f'<tr><td>{i}</td><td>{j}</td></tr>\n')
+    file.write('</table>\n')
+    
+    
+# D
+    file.write('<p style="font-size: 24px;">Identificar todos os Musicos e calcular o número de vezes que são mencionados.</p>\n')
+    file.write('<table border="1">\n')
+    file.write('<table border="1" style="width: 300px;">\n')
+    file.write('<tr><th>Músicos</th><th>Registos</th></tr>\n')
+    for i, j in musicos.items():
+        file.write(f'<tr><td>{i}</td><td>{j}</td></tr>\n')
+    file.write('</table>\n')
+    
+    
+    file.write('</body>\n</html>')
+
+# E
+    file.write('<p style="font-size: 24px;">Construir um Grafo de Canções/Cantores que associa cada canção aos cantores/tocadores referidos no registo.</p>\n')
+    file.write('<img src="graph_visualization.png" alt="Grafo Canções/Cantores">')
+
+webbrowser.open('out.html')
