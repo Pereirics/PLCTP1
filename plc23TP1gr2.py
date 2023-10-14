@@ -209,20 +209,25 @@ plt.savefig("graph_visualization.png")
 
 
 # ------------ Geração do ficheiro html ------------
-with open('out.html', 'w') as file:
 
+# Abre/Cria um ficheiro html
+with open('plc23TP1gr2.html', 'w') as file:
+
+    # Cabeçalho inicial
     file.write('<html>\n<head>\n<title>plc23TP1gr2</title>\n</head>\n<body>\n')
 
-# A   
+    # A)
     file.write('<p style="font-size: 24px;">Calcular a frequência de registos por Província e por Local.</p>\n')
-    #provincias
+    
+    # Provincias
     file.write('<table border="1">\n')
     file.write('<table border="1" style="width: 300px;">\n')
     file.write('<tr><th>Provincia</th><th>Registos</th></tr>\n')
     for i, j in prov.items():
         file.write(f'<tr><td>{i}</td><td>{j}</td></tr>\n')
     file.write('</table>\n')
-    #locais
+
+    # Locais
     file.write('<table border="1">\n')
     file.write('<table border="1" style="width: 300px;">\n')
     file.write('<tr><th>Local</th><th>Registos</th></tr>\n')
@@ -231,26 +236,26 @@ with open('out.html', 'w') as file:
     file.write('</table>\n')
     
     
-# B
+    # B)
     file.write('<p style="font-size: 24px;">Calcular a percentagem de canções que têm pelo menos uma gravação "mp3."</p>\n')
     
     file.write(f'<p>Percentagem: {percent}%</p>')
 
     file.write('<ul>\n')
     if comMP3:
-        file.write('<li>' + comMP3[0])
+        file.write(comMP3[0])
 
     for index, song in enumerate(comMP3[1:], start=1):
         if index % 5 == 0:
-            file.write('</li>\n<li>')
+            file.write("\n")
         elif index != 0:
             file.write(' || ')
         file.write(song)
         
-    file.write('</li>\n</ul>\n')
+    file.write("</ul>\n")
     
     
-# C
+    # C)
     file.write('<p style="font-size: 24px;">Calcular a distribuição por instrumento musical.</p>\n')
 
     file.write('<table border="1">\n')
@@ -261,7 +266,7 @@ with open('out.html', 'w') as file:
     file.write('</table>\n')
     
     
-# D
+    # D)
     file.write('<p style="font-size: 24px;">Identificar todos os Musicos e calcular o número de vezes que são mencionados.</p>\n')
     file.write('<table border="1">\n')
     file.write('<table border="1" style="width: 300px;">\n')
@@ -273,8 +278,9 @@ with open('out.html', 'w') as file:
     
     file.write('</body>\n</html>')
 
-# E
+    # E)
     file.write('<p style="font-size: 24px;">Construir um Grafo de Canções/Cantores que associa cada canção aos cantores/tocadores referidos no registo.</p>\n')
     file.write('<img src="graph_visualization.png" alt="Grafo Canções/Cantores">')
 
+# Abre o ficheiro html automaticamente
 webbrowser.open('out.html')
