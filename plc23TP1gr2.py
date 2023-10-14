@@ -107,9 +107,9 @@ for line in arr:
     if re.search(r"\.mp3", line[-2]):
         comMP3.append(getCancao(line))
 
-comMP3 = list(set(comMP3))
-
 percent = len(comMP3) / len(arr) * 100
+
+comMP3 = list(set(comMP3))
 
 print("------------------------------------------------------------------------------------------------------------")
 print("Calcular a percentagem de canções que têm pelo menos uma gravação \"mp3\", indicando o título dessas canções")
@@ -237,6 +237,8 @@ with open('out.html', 'w') as file:
 # B
     file.write('<p style="font-size: 24px;">Calcular a percentagem de canções que têm pelo menos uma gravação "mp3."</p>\n')
     
+    file.write(f'<p>Percentagem: {percent}%</p>')
+
     file.write('<ul>\n')
     if comMP3:
         file.write('<li>' + comMP3[0])
