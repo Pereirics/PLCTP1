@@ -64,7 +64,7 @@ def getMusicos(line):
     res = []
     line = re.split(';', line[3])
     
-    pattern1 = r'(.+?) +\(.\)'
+    pattern1 = r'(.+?) +\(\D*\)'
 
     for pedaco in line:
         pedaco = pedaco.strip()
