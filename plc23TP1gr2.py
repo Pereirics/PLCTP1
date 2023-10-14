@@ -170,7 +170,7 @@ for line in arr:
 # Cálculo de possíveis ocorrências extra de músicos como na alínea c)
 for line in vazia:
     for i in getMusicos(line):
-        instrumentos[i] += 1
+        musicos[i] += 1
 
 # ------------- e) -------------
 
