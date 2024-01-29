@@ -106,15 +106,22 @@ for line in arr:
     prov[getProvince(line)] += 1
     loc[getLocal(line)] += 1
 
+# Ordenar por ordem alfabética
+prov = dict(sorted(prov.items(), key=lambda item: item[0], reverse=False))
+loc = dict(sorted(loc.items(), key=lambda item: item[0], reverse=False))
+
 # ------------- b) -------------
 
 # Criação de lista para guardar as músicas com suporte para MP3
 comMP3 = []
+semMP3 = []
 
 # Verificação do suporte de MP3 em cada linha
 for line in arr:
     if re.search(r"\.mp3", line[-2]):
         comMP3.append(getCancao(line))
+    else:
+        semMP3.append(getCancao(line))
 
 # Cálculo da percentagem de músicas que suportam MP3
 percent = len(comMP3) / len(arr) * 100
@@ -149,7 +156,7 @@ for line in vazia:
         instrumentos[i] += 1
 
 # Ordenar o dicionário por ordem decrescente para vermos a distribuição de instrumentos
-instrumentos = dict(sorted(instrumentos.items(), key=lambda item: item[1], reverse=True))
+instrumentos = dict(sorted(instrumentos.items(), key=lambda item: item[0], reverse=False))
 
 # ------------- d) -------------
 
@@ -171,6 +178,9 @@ for line in arr:
 for line in vazia:
     for i in getMusicos(line):
         musicos[i] += 1
+
+# Ordenar por ordem alfabética
+musicos = dict(sorted(musicos.items(), key=lambda item: item[0], reverse=False))
 
 # ------------- e) -------------
 
@@ -241,18 +251,19 @@ with open('plc23TP1gr2.html', 'w') as file:
     
     file.write(f'<p>Percentagem: {percent}%</p>')
 
-    file.write('<ul>\n')
-    if comMP3:
-        file.write(comMP3[0])
+    file.write('<table border="1">\n')
+    file.write('<table border="1" style="width: 300px;">\n')
+    file.write('<tr><th>Musica</th><th>Suporte MP3</th></tr>\n')
 
-    for index, song in enumerate(comMP3[1:], start=1):
-        if index % 5 == 0:
-            file.write("\n")
-        elif index != 0:
-            file.write(' || ')
-        file.write(song)
-        
-    file.write("</ul>\n")
+    arr.sort(key = lambda line: getCancao(line))
+
+    for line in arr:
+        mus = getCancao(line)
+        if mus in comMP3:
+            file.write(f'<tr><td>{mus}</td><td>Sim</td></tr>\n')
+        elif mus in semMP3:
+            file.write(f'<tr><td>{mus}</td><td>Não</td></tr>\n')
+    file.write('</table>\n')
     
     
     # C)
